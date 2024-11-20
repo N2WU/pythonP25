@@ -40,8 +40,11 @@ def index():
     if request.method == "POST":
         name = request.form["name"]
         message = request.form["message"]
-        faxprint(name,message)
-        return f"Thank you {name}! Your message: '{message}' has been received."
+        if len(message) > 140:
+            return f"Your message was too long. Please retry."
+        else:
+            faxprint(name,message)
+            return f"Thank you {name}! Your message: '{message}' has been received."
     return render_template("form.html")
 # there needs to be some form of hook here or in the serial thing
 
