@@ -5,13 +5,25 @@ import serial
 app = Flask(__name__)
 
 def faxprint(name,message):
-    ret_byte = bytearray('\n', 'utf-8')
+    ser = serial.Serial(
+    port='COM4',
+    baudrate=115200,
+    parity=serial.PARITY_NONE,
+    stopbits=serial.STOPBITS_TWO,
+    bytesize=serial.EIGHTBITS,
+    )
     ser.isOpen()
     print("Serial Open")
-    ser.reset_output_buffer
-    ser.write(bytearray(("from: " +  name + ": "), 'utf-8'))
+    #ret_byte = bytearray('\n', 'utf-8')
+    #ser.reset_output_buffer
+    ser.write(bytearray(("from " +  name + ": "), 'utf-8'))
+    ser.write(bytearray('\n', 'utf-8'))
+    print("Name printed")
     time.sleep(0.1)
     ser.write(bytearray(message, 'utf-8'))
+    ser.write(bytearray('\n', 'utf-8'))
+    ser.write(bytearray('\n', 'utf-8'))
+    print("Message Printed")
     out = ''
     time.sleep(0.5)
     while ser.inWaiting() > 0:
@@ -19,7 +31,6 @@ def faxprint(name,message):
     if out != '':
         print(">>") + out
         ser.close()
-    exit()
 
 # Route to display the form
 @app.route("/", methods=["GET", "POST"])
@@ -33,13 +44,16 @@ def index():
 # there needs to be some form of hook here or in the serial thing
 
 if __name__ == "__main__":
-    # setup serial
-    ser = serial.Serial(
-        port='COM4',
-        baudrate=115200,
-        parity=serial.PARITY_NONE,
-        stopbits=serial.STOPBITS_TWO,
-        bytesize=serial.EIGHTBITS
-    )
-    app.run(debug=True)
     # would running code here work?
+    #ser = serial.Serial(
+    #port='COM4',
+    #baudrate=115200,
+    #parity=serial.PARITY_NONE,
+    #stopbits=serial.STOPBITS_TWO,
+    #bytesize=serial.EIGHTBITS,
+    #)
+    #ser.isOpen()
+    #print("Serial Open")
+    #ser.close()
+    app.run(debug=True)
+
