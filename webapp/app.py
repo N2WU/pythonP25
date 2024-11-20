@@ -16,14 +16,16 @@ def faxprint(name,message):
     print("Serial Open")
     #ret_byte = bytearray('\n', 'utf-8')
     #ser.reset_output_buffer
-    ser.write(bytearray(("from " +  name + ": "), 'utf-8'))
-    ser.write(bytearray('\n', 'utf-8'))
-    print("Name printed")
+    if len(name) < 40:
+        ser.write(bytearray(("from " +  name + ": "), 'utf-8'))
+        ser.write(bytearray('\n', 'utf-8'))
+        print("Name printed")
     time.sleep(0.1)
-    ser.write(bytearray(message, 'utf-8'))
-    ser.write(bytearray('\n', 'utf-8'))
-    ser.write(bytearray('\n', 'utf-8'))
-    print("Message Printed")
+    if len(message) < 140:
+        ser.write(bytearray(message, 'utf-8'))
+        ser.write(bytearray('\n', 'utf-8'))
+        ser.write(bytearray('\n', 'utf-8'))
+        print("Message Printed")
     out = ''
     time.sleep(0.5)
     while ser.inWaiting() > 0:
