@@ -1,38 +1,28 @@
 from flask import Flask, render_template, request
 import time
-import serial
+import socket
 
 app = Flask(__name__)
 
 def faxprint(name,message):
-    ser = serial.Serial(
-    port='COM4',
-    baudrate=115200,
-    parity=serial.PARITY_NONE,
-    stopbits=serial.STOPBITS_TWO,
-    bytesize=serial.EIGHTBITS,
-    )
-    ser.isOpen()
+    serverMACAddress = '00:08:1b:95:5c:3d'
+    port = 1
+    s = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
+    s.connect((serverMACAddress,port))
     print("Serial Open")
     #ret_byte = bytearray('\n', 'utf-8')
     #ser.reset_output_buffer
     if len(name) < 40:
-        ser.write(bytearray(("from " +  name + ": "), 'utf-8'))
-        ser.write(bytearray('\n', 'utf-8'))
+        s.send(bytearray(("from " +  name + ": "), 'utf-8'))
+        s.send(bytearray('\n', 'utf-8'))
         print("Name printed")
     time.sleep(0.1)
     if len(message) < 140:
-        ser.write(bytearray(message, 'utf-8'))
-        ser.write(bytearray('\n', 'utf-8'))
-        ser.write(bytearray('\n', 'utf-8'))
+        s.send(bytearray(message, 'utf-8'))
+        s.send(bytearray('\n', 'utf-8'))
+        s.send(bytearray('\n', 'utf-8'))
         print("Message Printed")
-    out = ''
-    time.sleep(0.5)
-    while ser.inWaiting() > 0:
-        out += ser.read(1)
-    if out != '':
-        print(">>") + out
-        ser.close()
+    s.close()
 
 # Route to display the form
 @app.route("/", methods=["GET", "POST"])
