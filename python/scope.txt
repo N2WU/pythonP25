@@ -1,6 +1,6 @@
 To set up a Python web application that allows users to enter their name and message via a form, and to run it with ngrok for external access, you can use Flask—a lightweight Python web framework. Here's a step-by-step guide to help you get this working:
 Steps:
-1. Install Flask
+1. Install Flask!
 
 If you haven’t already, you’ll need to install Flask. Run this command in your terminal to install it via pip:
 
