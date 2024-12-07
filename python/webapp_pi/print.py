@@ -27,15 +27,17 @@ def store(name,message):
 """
 
 def print_records(s):
-    if os.path.exists('temp_data.csv'):
-        with open('temp_data.csv')as file:
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    csv_filename = dir_path + '/temp_data.csv'
+    if os.path.exists(csv_filename):
+        with open(csv_filename)as file:
             message_csv = csv.reader(file)
             for row in message_csv:
                     packet = message_csv[row]
                     name = packet[0]
                     message = packet[1]
                     faxprint(s,name,message)
-        os.remove('temp_data.csv')
+        os.remove(csv_filename)
     else:
         print('No data to print')
 
