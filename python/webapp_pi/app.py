@@ -1,11 +1,15 @@
 from flask import Flask, render_template, request
 import csv
+import os
 
 app = Flask(__name__)
 
 def store(name,message):
     message_data = [[name, message]]
-    with open('temp_data.csv', 'a', newline='') as csvfile:
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    csv_filename = dir_path + '/temp_data.csv'
+    print(csv_filename)
+    with open(csv_filename, 'a', newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerows(message_data)
 
