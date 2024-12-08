@@ -33,9 +33,8 @@ def print_records(s):
         with open(csv_filename)as file:
             message_csv = csv.reader(file)
             for row in message_csv:
-                    packet = message_csv[row]
-                    name = packet[0]
-                    message = packet[1]
+                    name = row[0]
+                    message = row[1]
                     faxprint(s,name,message)
         os.remove(csv_filename)
     else:
