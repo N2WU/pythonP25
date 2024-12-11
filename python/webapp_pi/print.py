@@ -35,6 +35,8 @@ def print_records(s):
             for row in message_csv:
                     name = row[0]
                     message = row[1]
+                    print("printing")
+                    print(name,message)
                     faxprint(s,name,message)
         os.remove(csv_filename)
     else:
@@ -47,12 +49,11 @@ def faxprint(s,name,message):
         s.send(bytearray('\n', 'utf-8'))
         print("Name printed")
     time.sleep(0.1)
-    if len(message) < 140:
+    if len(message) < 240:
         s.send(bytearray(message, 'utf-8'))
         s.send(bytearray('\n', 'utf-8'))
         s.send(bytearray('\n', 'utf-8'))
         print("Message Printed")
-    s.close()
 
 if __name__ == "__main__":
     while True:
@@ -61,6 +62,7 @@ if __name__ == "__main__":
             s = connect()
             print('Bluetooth Active')
             print_records(s)
+            s.close()
         except:
             print('Bluetooth not active')
         time.sleep(5*60) #try it every 5 minutes
